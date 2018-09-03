@@ -6,7 +6,7 @@
 #    By: gpouyat <gpouyat@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/08 23:02:42 by gpouyat           #+#    #+#              #
-#    Updated: 2018/09/03 17:26:05 by gpouyat          ###   ########.fr        #
+#    Updated: 2018/09/03 18:33:27 by gpouyat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,19 +22,16 @@ ifeq ($(SAN),yes)
 endif
 
 NAME=Colleen
-ARCH=macho64
-SRCS=Colleen.c
-
-OBJS=$(SRCS:%.s=%.o)
+SRC=$(NAME).c
 
 all: $(NAME)
 
 
 $(NAME):
-	$(CC) $(CFLAGS) -o $(NAME) $(SRCS)
+	$(CC) $(CFLAGS) -o $(NAME) $(SRC)
 
 clean:
-	$(RM) -r tmp_Colleen.tmp
+	$(RM) -r tmp_$(NAME).tmp
 
 fclean: clean
 	$(RM) $(NAME)
@@ -42,6 +39,6 @@ fclean: clean
 re: fclean all
 
 test: $(NAME)
-	./Colleen > tmp_Colleen.tmp ; diff tmp_Colleen.tmp Colleen.c
+	./$(NAME) > tmp_$(NAME).tmp ; diff tmp_$(NAME).tmp $(SRC)
 
 .phony: all clean fclean re test
