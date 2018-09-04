@@ -5,27 +5,45 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gpouyat <gpouyat@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/09/03 17:12:30 by gpouyat           #+#    #+#              #
-#    Updated: 2018/09/04 20:07:45 by gpouyat          ###   ########.fr        #
+#    Created: 2018/08/08 23:02:42 by gpouyat           #+#    #+#              #
+#    Updated: 2018/09/04 20:06:14 by gpouyat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all:
-	make -C C
-	make -C ASM
+CC=cc
+CFLAGS          = -Wextra -Wall -Werror
+ASMFLAGS		= -f macho64
+
+ifeq ($(DEV),yes)
+    CFLAGS              += -g3
+endif
+
+ifeq ($(SAN),yes)
+    CFLAGS              += -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls
+endif
+
+NAME=Colleen
+SRC=$(NAME).s
+OBJ=$(NAME).o
+TMP=tmp_$(NAME).tmp
+
+all: $(NAME)
+
+
+$(NAME):
+	nasm $(ASMFLAGS) $(CFLAGS) $(SRC) -o $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) 
 
 clean:
-	make clean -C C
-	make clean -C ASM
+	$(RM) $(TMP)
+	$(RM) $(OBJ)
 
-fclean:
-	make fclean -C C
-	make fclean -C ASM
+fclean: clean
+	$(RM) $(NAME)
 
 re: fclean all
 
-tests:
-	make tests -C C
-	make tests -C ASM
+test: $(NAME)
+	./$(NAME) > $(TMP) ; diff $(TMP) $(SRC)
 
-.phony: all clean fclean tests
+.phony: all clean fclean re test
