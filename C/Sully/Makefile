@@ -5,31 +5,40 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gpouyat <gpouyat@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/09/03 17:12:30 by gpouyat           #+#    #+#              #
-#    Updated: 2018/09/04 12:26:42 by gpouyat          ###   ########.fr        #
+#    Created: 2018/08/08 23:02:42 by gpouyat           #+#    #+#              #
+#    Updated: 2018/09/04 11:53:13 by gpouyat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all: 
-	make -C Colleen
-	make -C Grace
-	make -C Sully
+CC=cc
+CFLAGS          = -Wall -Wextra -Werror
+
+ifeq ($(DEV),yes)
+    CFLAGS              += -g3
+endif
+
+ifeq ($(SAN),yes)
+    CFLAGS              += -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls
+endif
+
+NAME=Sully
+SRC=$(NAME).c
+
+all: $(NAME)
+
+
+$(NAME):
+	$(CC) $(CFLAGS) -o $(NAME) $(SRC)
 
 clean:
-	make clean -C Colleen
-	make clean -C Grace
-	make clean -C Sully
+	$(RM) -r $(NAME)_*
 
-fclean:
-	make fclean -C Colleen
-	make fclean -C Grace
-	make fclean -C Sully
+fclean: clean
+	$(RM) $(NAME)
 
 re: fclean all
 
-tests:
-	make test -C Colleen
-	make test -C Grace
-	make test -C Sully
+test: $(NAME)
+	./$(NAME)
 
-.phony: all clean fclean test
+.phony: all clean fclean re test
