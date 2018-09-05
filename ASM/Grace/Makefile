@@ -5,31 +5,43 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gpouyat <gpouyat@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/09/03 17:12:30 by gpouyat           #+#    #+#              #
-#    Updated: 2018/09/05 12:11:19 by gpouyat          ###   ########.fr        #
+#    Created: 2018/08/08 23:02:42 by gpouyat           #+#    #+#              #
+#    Updated: 2018/09/05 12:10:54 by gpouyat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all: 
-	make -C Colleen
-	make -C Grace
-	# make -C Sully
+CC=cc
+CFLAGS          = -Wextra -Wall -Werror
+ASMFLAGS		= -f macho64
+
+ifeq ($(DEV),yes)
+    CFLAGS              += -g3
+endif
+
+ifeq ($(SAN),yes)
+    CFLAGS              += -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls
+endif
+
+NAME=Grace
+SRC=$(NAME).s
+OBJ=$(NAME).o
+all: $(NAME)
+
+
+$(NAME):
+	nasm $(ASMFLAGS) $(CFLAGS) $(SRC) -o $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) 
 
 clean:
-	make clean -C Colleen
-	make clean -C Grace
-	# make clean -C Sully
+	$(RM) $(OBJ)
+	$(RM) $(NAME)_kid.s
 
-fclean:
-	make fclean -C Colleen
-	make fclean -C Grace
-	# make fclean -C Sully
+fclean: clean
+	$(RM) $(NAME)
 
 re: fclean all
 
-tests:
-	make test -C Colleen
-	make test -C Grace
-	# make test -C Sully
+test: $(NAME)
+	./$(NAME) ; diff $(NAME)_kid.s $(SRC)
 
-.phony: all clean fclean test
+.phony: all clean fclean re test
