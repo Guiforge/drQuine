@@ -6,7 +6,7 @@
 #    By: gpouyat <gpouyat@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/03 17:12:30 by gpouyat           #+#    #+#              #
-#    Updated: 2018/09/04 20:07:45 by gpouyat          ###   ########.fr        #
+#    Updated: 2018/11/13 13:04:42 by gpouyat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,5 +27,6 @@ re: fclean all
 tests:
 	make tests -C C
 	make tests -C ASM
+	cd Python ; ./test.sh ; cd ..
 
 .phony: all clean fclean tests

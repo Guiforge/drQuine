@@ -6,7 +6,7 @@
 #    By: gpouyat <gpouyat@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/08 23:02:42 by gpouyat           #+#    #+#              #
-#    Updated: 2018/09/04 11:53:13 by gpouyat          ###   ########.fr        #
+#    Updated: 2018/11/13 13:07:16 by gpouyat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,6 @@ fclean: clean
 re: fclean all
 
 test: $(NAME)
-	./$(NAME)
+	./test.sh
 
 .phony: all clean fclean re test
